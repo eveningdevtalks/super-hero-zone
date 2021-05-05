@@ -1,14 +1,29 @@
 import styled from "styled-components";
+import logo from '../assets/hype logo new.png';
 
 const Navigation = () => {
   return (
     <Nav>
       <NavLogo href="#">
-        Movie App <By>Evening Dev Talks</By>
+        Super Hero Zone <By>Evening Dev Talks</By>
       </NavLogo>
+      <Support>
+        <img src={logo} alt="hype zone" />
+      </Support>
     </Nav>
   );
 };
+
+const Support = styled.div`
+  img {
+    width: 50px;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+`;
 
 const Nav = styled.nav`
   position: fixed;
@@ -18,9 +33,10 @@ const Nav = styled.nav`
   height: 70px;
   background-color: #090b13;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   z-index: 1;
+  padding: 0px 40px;
 `;
 
 const NavLogo = styled.a`

@@ -1,19 +1,22 @@
-import styled from "styled-components";
-import Home from "./components/Home";
+import Home from "./pages/Home";
 import Navigation from "./components/Navigation";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import MovieDetail from "./pages/MovieDetail";
 
 function App() {
   return (
-    <AppContainer>
+    <Router>
       <Navigation />
-      <Home />
-    </AppContainer>
+      <Switch>
+        <Route path="/movie/:id">
+          <MovieDetail />
+        </Route>
+        <Route path="/">
+          <Home />
+        </Route>
+      </Switch>
+    </Router>
   );
 }
-
-const AppContainer = styled.main`
-  background: #313131;
-  height: 100vh;
-`;
 
 export default App;
