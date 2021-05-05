@@ -37,7 +37,11 @@ exports.login = async (req, res, next) => {
       throw Error("Unauthorized!!! Avengers Assemble");
     }
 
-    const token = jwt.sign(user._id, config.secret);
+    const jwtPayload = { _id: user._id.toString() };
+
+    const token = jwt.sign(jwtPayload, config.secret, {
+      expiresIn: "15s",
+    });
 
     return res.status(httpStatus.OK).json({ token });
   } catch (error) {
