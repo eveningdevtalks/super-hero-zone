@@ -28,9 +28,7 @@ module.exports = async (req, res, next) => {
 
     req.user = user;
     next();
-    return;
   } catch (error) {
     next(error);
-    return;
   }
 };
