@@ -1,5 +1,8 @@
 const Joi = require("joi");
 
+const studios = ["marvel", "dc"];
+const tags = ["trending", "other"];
+
 module.exports = {
   create: {
     body: Joi.object({
@@ -8,9 +11,13 @@ module.exports = {
       description: Joi.string().optional(),
       imageUrl: Joi.string().optional().allow(null),
       rating: Joi.number().optional(),
-      studio: Joi.string().valid("marvel", "dc").optional(),
+      studio: Joi.string()
+        .valid(...studios)
+        .optional(),
       releaseDate: Joi.date().allow(null).optional(),
-      tag: Joi.string().valid("trending", "other").optional(),
+      tag: Joi.string()
+        .valid(...tags)
+        .optional(),
     }),
   },
   update: {
@@ -20,9 +27,13 @@ module.exports = {
       description: Joi.string().optional(),
       imageUrl: Joi.string().optional().allow(null),
       rating: Joi.number().optional(),
-      studio: Joi.string().valid("marvel", "dc").optional(),
+      studio: Joi.string()
+        .valid(...studios)
+        .optional(),
       releaseDate: Joi.date().allow(null).optional(),
-      tag: Joi.string().valid("trending", "other").optional(),
+      tag: Joi.string()
+        .valid(...tags)
+        .optional(),
     }),
   },
 };

@@ -20,18 +20,4 @@ const userSchema = new Schema(
   }
 );
 
-userSchema.pre("save", async (next) => {
-  try {
-    if (!this.isModified("password")) {
-      return next();
-    }
-
-    this.password = await bcrypt.hash(this.password);
-
-    return next();
-  } catch (error) {
-    return next(error);
-  }
-});
-
 module.exports = mongoose.model("User", userSchema);
