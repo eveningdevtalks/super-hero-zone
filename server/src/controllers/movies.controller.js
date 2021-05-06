@@ -20,7 +20,7 @@ exports.delete = async (req, res, next) => {
 
     const deletedMovie = await Movie.findByIdAndRemove(id);
     if (!deletedMovie) {
-      throw Error("Movie not found");
+      throw Error("Movie not found 🤷‍♂️");
     }
 
     return res.status(httpStatus.OK).send();
@@ -41,7 +41,7 @@ exports.update = async (req, res, next) => {
       { new: true }
     );
     if (!movie) {
-      throw Error("Movie not found");
+      throw Error("Movie not found 🤷‍♂️");
     }
 
     return res.status(httpStatus.OK).json({ movie });
@@ -56,7 +56,7 @@ exports.view = async (req, res, next) => {
 
     const movie = await Movie.findById(id).select("-__v");
     if (!movie) {
-      throw Error("Movie not found");
+      throw Error("Movie not found 🤷‍♂️");
     }
 
     return res.status(httpStatus.OK).json({ movie });

@@ -11,7 +11,7 @@ router.post("/register", validate(validation.register), controller.register);
 
 router.get("/secret", auth, (req, res, next) => {
   res.json({
-    message: `Hello ${req.user.login}, you are now in Wakanda`,
+    message: `Hello ${req.user.username}, you are now in Wakanda`,
   });
 });
 
