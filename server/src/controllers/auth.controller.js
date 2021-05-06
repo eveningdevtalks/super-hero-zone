@@ -7,16 +7,16 @@ const User = require("../models/user.model");
 
 exports.register = async (req, res, next) => {
   try {
-    const { login, password } = req.body;
+    const { username, password } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = new User({ login, password: hashedPassword });
+    const user = new User({ username, password: hashedPassword });
     await user.save();
 
     return res
       .status(httpStatus.CREATED)
-      .json({ message: `Welcome to Super Hero Zone "${login}"` });
+      .json({ message: `Welcome to Super Hero Zone "${username}" 🤖` });
   } catch (error) {
     next(error);
   }
@@ -24,9 +24,9 @@ exports.register = async (req, res, next) => {
 
 exports.login = async (req, res, next) => {
   try {
-    const { login, password } = req.body;
+    const { username, password } = req.body;
 
-    const user = await User.findOne({ login });
+    const user = await User.findOne({ username });
     if (!user) {
       throw Error("User not found");
     }
@@ -34,13 +34,13 @@ exports.login = async (req, res, next) => {
     const passwordOk = await bcrypt.compare(password, user.password);
 
     if (!passwordOk) {
-      throw Error("Unauthorized!!! Avengers Assemble");
+      throw Error("Unauthorized!!! Avengers Assemble 👽");
     }
 
     const jwtPayload = { _id: user._id.toString() };
 
     const token = jwt.sign(jwtPayload, config.secret, {
-      expiresIn: "15s",
+      expiresIn: config.tokenExpiresIn,
     });
 
     return res.status(httpStatus.OK).json({ token });

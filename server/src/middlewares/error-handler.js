@@ -2,8 +2,8 @@
 
 const httpStatus = require('http-status')
 
-// hanlde not found error
-exports.handleNotFound = (req, res, next) => {
+// handle not found error
+exports.handleNotFound = (_req, res, _next) => {
   res.status(httpStatus.NOT_FOUND)
   res.json({
     'error': 'Not found'
@@ -12,7 +12,7 @@ exports.handleNotFound = (req, res, next) => {
 }
 
 // handle errors
-exports.handleError = (err, req, res, next) => {
+exports.handleError = (err, _req, res, _next) => {
   res.status(httpStatus.INTERNAL_SERVER_ERROR)
   res.json({
     error: err.message
