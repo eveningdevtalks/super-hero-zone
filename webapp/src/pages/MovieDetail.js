@@ -60,7 +60,7 @@ const MovieDetail = () => {
                 <ExtraDetails>
                   <ReleaseDate>Released: April 13, 2015</ReleaseDate>
                   <Studio>
-                    { type === 'marvel' ?  <img src={MarvelLogo} alt="marvel" /> : <img src={DCLogo} alt="dc comics"ෆ /> }
+                    { type === 'marvel' ?  <img src={MarvelLogo} alt="marvel" /> : <img src={DCLogo} alt="dc comics" /> }
                   </Studio>
                 </ExtraDetails>
               </ContentArea>

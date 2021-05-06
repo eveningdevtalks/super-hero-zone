@@ -1,6 +1,6 @@
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Navigation from "./components/Navigation";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import MovieDetail from "./pages/MovieDetail";
 
 function App() {
