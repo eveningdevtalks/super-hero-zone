@@ -88,7 +88,7 @@ const MovieContent = styled.div`
   align-items: center;
   height: 100%;
   flex-direction: column;
-  opacity: 0;
+  z-index: 3;
 `;
 
 const MovieTitle = styled.div`
@@ -102,7 +102,7 @@ const Movie = styled.div`
   position: relative;
   height: 200px;
   border: 3px solid #505050;
-  transition: all 500ms ease-in-out;
+  transition: all .25s  ease-in;
   width: 20%;
   margin: 0 10px;
 
@@ -118,8 +118,13 @@ const Movie = styled.div`
     border: 3px solid #dedede;
     transform: translateY(-5px);
 
-    div {
-      opacity: 1;
+    > img {
+      z-index: -1;
+      opacity: 0.2;
+    }
+
+    ${MovieContent} {
+      z-index: 3;
     }
   }
 
@@ -130,13 +135,18 @@ const Movie = styled.div`
     object-fit: cover;
     opacity: 1;
     position: absolute;
-    transition: opacity 500ms ease-in-out;
+    transition: all .25s ease-in;
     width: 100%;
     top: 0;
     border-radius: 10px;
 
     &:hover {
       opacity: 0.2;
+      z-index: -1;
+
+      ${MovieContent} {
+        z-index: 3;
+      }
     }
   }
 `;
