@@ -1,66 +1,66 @@
 import { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
-import Loader from "../components/Loader";
 import MovieRating from "../components/MovieRating";
 import MarvelLogo from '../assets/Marvel_Logo.svg';
 import DCLogo from '../assets/DC_Comics_logo.svg';
+import LoaderContainer from "../components/Loader";
+import moment from 'moment';
 
 const MovieDetail = () => {
-  const type = "marvel";
-
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [movie, setMovie] = useState({});
+
+  let { id } = useParams();
 
   const handleViewHome = () => {
     history.push("");
   };
 
+  const handleLoadMovie = async (id) => {
+    const _data = await fetch(
+      `${process.env.REACT_APP_BASE_URL}/movies/${id}`
+    );
+    const data = await _data.json();
+    const movie = data.movie;
+    setMovie(movie);
+    setLoading(false);
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+    handleLoadMovie(id);
+  }, [id]);
+
+  console.log(movie);
 
   return (
-    <Container type={type}>
+    <Container type={movie.studio}>
       {loading ? (
-        <Loader />
+        <LoaderContainer />
       ) : (
         <>
           <Navigation>
             <Button onClick={handleViewHome}>↚ Back</Button>
           </Navigation>
           <MovieCard>
-            <Title>Avengers: Age of Ultron</Title>
+            <Title>{ movie.title }</Title>
             <MovieContent>
               <ImageArea>
                 <img
-                  src="https://cdn.britannica.com/60/182360-050-CD8878D6/Avengers-Age-of-Ultron-Joss-Whedon.jpg"
+                  src={movie.imageUrl}
                   alt=""
                 ></img>
-                <MovieRating rating="7.3/10" />
+                <MovieRating rating={`${movie.rating}/10`} />
               </ImageArea>
               <ContentArea>
                 <MovieDescription>
-                  Avengers: Age of Ultron is a 2015 American superhero film
-                  based on the Marvel Comics superhero team the Avengers.
-                  Produced by Marvel Studios and distributed by Walt Disney
-                  Studios Motion Pictures, it is the sequel to The Avengers
-                  (2012) and the 11th film in the Marvel Cinematic Universe
-                  (MCU). Written and directed by Joss Whedon, the film features
-                  an ensemble cast including Robert Downey Jr., Chris Hemsworth,
-                  Mark Ruffalo, Chris Evans, Scarlett Johansson, Jeremy Renner,
-                  Don Cheadle, Aaron Taylor-Johnson, Elizabeth Olsen, Paul
-                  Bettany, Cobie Smulders, Anthony Mackie, Hayley Atwell, Idris
-                  Elba, Stellan Skarsgård, James Spader, and Samuel L. Jackson.
-                  In the film, the Avengers fight Ultron, an artificial
-                  intelligence obsessed with causing human extinction.
+                  {movie.description}
                 </MovieDescription>
                 <ExtraDetails>
-                  <ReleaseDate>Released: April 13, 2015</ReleaseDate>
+                  <ReleaseDate>Released: { moment(movie.releaseDate).format('MMM DD, YYYY') }</ReleaseDate>
                   <Studio>
-                    { type === 'marvel' ?  <img src={MarvelLogo} alt="marvel" /> : <img src={DCLogo} alt="dc comics" /> }
+                    { movie.studio === 'marvel' ?  <img src={MarvelLogo} alt="marvel" /> : <img src={DCLogo} alt="dc comics" /> }
                   </Studio>
                 </ExtraDetails>
               </ContentArea>
@@ -72,12 +72,22 @@ const MovieDetail = () => {
   );
 };
 
+const resolveBackground = (type) => {
+  if (type === "marvel") {
+    return "#F0131E";
+  } else if (type === "dc") {
+    return "#0476f2";
+  }
+
+  return "#313131";
+}
+
 const Container = styled.main`
   display: flex;
   flex-direction: column;
   padding: 84px 10vw 0;
   margin: 0 auto;
-  background: ${(props) => (props.type === "marvel" ? "#F0131E" : "#0476f2")};
+  background: ${(props) => resolveBackground(props.type)};
   min-height: calc(100vh - 84px);
   justify-content: flex-start;
 `;
