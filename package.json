@@ -4,8 +4,8 @@
   "description": "Super Hero Zone",
   "main": "index.js",
   "scripts": {
-    "start": "cd server && npm run start",
-    "build": "bash .scripts/build.sh",
+    "start": "cd server && yarn start",
+    "build": "bash ./scripts/build.sh",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
