@@ -1,8 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MovieRating from "../components/MovieRating";
-import Error from "../components/Error";
+import ErrorPage from "../components/ErrorPage";
 import MarvelLogo from "../assets/Marvel_Logo.svg";
 import DCLogo from "../assets/DC_Comics_logo.svg";
 import LoaderContainer from "../components/Loader";
@@ -19,19 +19,24 @@ const MovieDetail = () => {
     history.push("");
   };
 
-  const handleLoadMovie = async (id) => {
+  const handleLoadMovie = useCallback(async (id) => {
     try {
       const _data = await fetch(
         `${process.env.REACT_APP_BASE_URL}/movies/${id}`
       );
-      const data = await _data.json();
-      const movie = data.movie;
 
-      if (!movie) {
+      if (_data.status !== 200) {
         throw new Error();
       }
 
-      setMovie(movie);
+      const data = await _data.json();
+      const _movie = data.movie;
+
+      if (!_movie) {
+        throw new Error();
+      }
+
+      setMovie(_movie);
       setLoading(false);
       setError(false);
     } catch (err) {
@@ -39,21 +44,20 @@ const MovieDetail = () => {
       setLoading(false);
       setError(true);
     }
-  };
+  }, []);
 
   useEffect(() => {
     handleLoadMovie(id);
-  }, [id]);
+  }, [id, handleLoadMovie]);
 
   const handleContentView = () => {
-    console.log(loading, error);
     if (loading) {
       return <LoaderContainer />;
-    } else if (error) {
-      return <Error />;
     }
 
-    console.log(movie.releaseDate);
+    if (error || !movie._id) {
+      return <ErrorPage />;
+    }
 
     return (
       <>
@@ -71,7 +75,10 @@ const MovieDetail = () => {
               <MovieDescription>{movie.description}</MovieDescription>
               <ExtraDetails>
                 <ReleaseDate>
-                  Released: {new Intl.DateTimeFormat('en-US').format(new Date(movie.releaseDate))}
+                  Released:{" "}
+                  {new Intl.DateTimeFormat("en-US").format(
+                    new Date(movie.releaseDate)
+                  )}
                 </ReleaseDate>
                 <Studio>
                   {movie.studio === "marvel" ? (
