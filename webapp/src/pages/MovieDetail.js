@@ -1,8 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MovieRating from "../components/MovieRating";
-import Error from "../components/Error";
+import ErrorPage from "../components/ErrorPage";
 import MarvelLogo from "../assets/Marvel_Logo.svg";
 import DCLogo from "../assets/DC_Comics_logo.svg";
 import LoaderContainer from "../components/Loader";
@@ -19,25 +19,24 @@ const MovieDetail = () => {
     history.push("");
   };
 
-  const handleLoadMovie = async (_id) => {
+  const handleLoadMovie = useCallback(async (id) => {
     try {
       const _data = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/movies/${_id}`
+        `${process.env.REACT_APP_BASE_URL}/movies/${id}`
       );
 
-      console.log(_data);
       if (_data.status !== 200) {
         throw new Error();
       }
 
       const data = await _data.json();
-      const movie = data.movie;
+      const _movie = data.movie;
 
-      if (!movie) {
+      if (!_movie) {
         throw new Error();
       }
 
-      setMovie(movie);
+      setMovie(_movie);
       setLoading(false);
       setError(false);
     } catch (err) {
@@ -47,21 +46,20 @@ const MovieDetail = () => {
       setError(true);
       console.log("error", error);
     }
-  };
+  }, []);
 
   useEffect(() => {
     handleLoadMovie(id);
-  }, [id]);
+  }, [id, handleLoadMovie]);
 
   const handleContentView = () => {
-    console.log(loading, error);
     if (loading) {
       return <LoaderContainer />;
-    } else if (error) {
-      return <Error />;
     }
 
-    console.log(movie);
+    if (error || !movie._id) {
+      return <ErrorPage />;
+    }
 
     return (
       <>

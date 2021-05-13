@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import MovieList from "../components/MovieList";
-import Error from "../components/Error";
+import ErrorPage from "../components/ErrorPage";
 import LoaderContainer from "../components/Loader";
 
 const Home = () => {
@@ -47,7 +47,7 @@ const Home = () => {
     if (loading) {
       return <LoaderContainer />;
     } else if (error) {
-      return <Error />;
+      return <ErrorPage />;
     }
 
     return (
