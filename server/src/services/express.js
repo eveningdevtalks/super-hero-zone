@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const morgan = require("morgan");
+const path = require("path");
 
 const config = require("../config");
 const errorHandler = require("../middlewares/error-handler");
@@ -12,6 +13,9 @@ app.use(cors());
 app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// serve react app from www
+app.use(express.static(path.resolve(__dirname, "../../../www")));
 
 app.use("/api", apiRouter);
 
