@@ -2,7 +2,7 @@
   "name": "super-hero-zone",
   "version": "1.0.0",
   "description": "Super Hero Zone",
-  "main": "index.js",
+  "main": "server/src/index.js",
   "scripts": {
     "start": "cd server && yarn start",
     "build": "bash ./scripts/build.sh",
@@ -10,13 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eveningdevtalks/MovieApp.git"
+    "url": "git+https://github.com/eveningdevtalks/super-hero-zone.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eveningdevtalks/MovieApp/issues"
+    "url": "https://github.com/eveningdevtalks/super-hero-zone/issues"
   },
-  "homepage": "https://github.com/eveningdevtalks/MovieApp#readme"
+  "homepage": "https://github.com/eveningdevtalks/super-hero-zone#readme"
 }
