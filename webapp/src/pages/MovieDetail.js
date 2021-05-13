@@ -40,11 +40,8 @@ const MovieDetail = () => {
       setLoading(false);
       setError(false);
     } catch (err) {
-      console.error("Got an error", err);
       setLoading(false);
-      console.log("reached here");
       setError(true);
-      console.log("error", error);
     }
   }, []);
 
