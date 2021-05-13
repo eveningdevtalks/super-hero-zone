@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MovieRating from "../components/MovieRating";
@@ -19,11 +19,17 @@ const MovieDetail = () => {
     history.push("");
   };
 
-  const handleLoadMovie = async (id) => {
+  const handleLoadMovie = async (_id) => {
     try {
       const _data = await fetch(
-        `${process.env.REACT_APP_BASE_URL}/movies/${id}`
+        `${process.env.REACT_APP_BASE_URL}/movies/${_id}`
       );
+
+      console.log(_data);
+      if (_data.status !== 200) {
+        throw new Error();
+      }
+
       const data = await _data.json();
       const movie = data.movie;
 
@@ -35,9 +41,11 @@ const MovieDetail = () => {
       setLoading(false);
       setError(false);
     } catch (err) {
-      setMovie({});
+      console.error("Got an error", err);
       setLoading(false);
+      console.log("reached here");
       setError(true);
+      console.log("error", error);
     }
   };
 
@@ -53,7 +61,7 @@ const MovieDetail = () => {
       return <Error />;
     }
 
-    console.log(movie.releaseDate);
+    console.log(movie);
 
     return (
       <>
@@ -71,7 +79,10 @@ const MovieDetail = () => {
               <MovieDescription>{movie.description}</MovieDescription>
               <ExtraDetails>
                 <ReleaseDate>
-                  Released: {new Intl.DateTimeFormat('en-US').format(new Date(movie.releaseDate))}
+                  Released:{" "}
+                  {new Intl.DateTimeFormat("en-US").format(
+                    new Date(movie.releaseDate)
+                  )}
                 </ReleaseDate>
                 <Studio>
                   {movie.studio === "marvel" ? (

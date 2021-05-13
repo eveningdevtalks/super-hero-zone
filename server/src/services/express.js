@@ -14,12 +14,16 @@ app.use(morgan("combined"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+app.use("/api", apiRouter);
+
 // serve react app from www
 app.use(express.static(path.resolve(__dirname, "../../../www")));
 
-app.use("/api", apiRouter);
+app.use((req, res, next) => {
+  res.sendFile(path.resolve(__dirname, "../../../www/index.html"));
+});
 
-app.use(errorHandler.handleNotFound);
+// app.use(errorHandler.handleNotFound);
 app.use(errorHandler.handleError);
 
 exports.start = () => {
