@@ -1,52 +1,64 @@
-import styled from "styled-components";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
 import MovieList from "../components/MovieList";
+import Error from "../components/Error";
 import LoaderContainer from "../components/Loader";
 
 const Home = () => {
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [trendingMovies, setTrendingMovies] = useState([]);
   const [otherMovies, setOtherMovies] = useState([]);
 
   const handleLoadMovies = async () => {
-    const _data = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/movies/list?sortBy=releaseDate&order=desc`
-    );
-    const data = await _data.json();
-    const movies = data.movies;
+    try {
+      const _data = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/movies/list?sortBy=releaseDate&order=desc`
+      );
+      const data = await _data.json();
+      const movies = data.movies;
 
-    let _trendingMovies = [];
-    let _otherMovies = [];
+      let _trendingMovies = [];
+      let _otherMovies = [];
 
-    movies.forEach((_movie) => {
-      if (_movie.tag === "other") {
-        _otherMovies = [..._otherMovies, _movie];
-      } else {
-        _trendingMovies = [..._trendingMovies, _movie];
-      }
-    });
+      movies.forEach((_movie) => {
+        if (_movie.tag === "other") {
+          _otherMovies = [..._otherMovies, _movie];
+        } else {
+          _trendingMovies = [..._trendingMovies, _movie];
+        }
+      });
 
-    setTrendingMovies([..._trendingMovies]);
-    setOtherMovies([..._otherMovies]);
-    setLoading(false);
+      setTrendingMovies([..._trendingMovies]);
+      setOtherMovies([..._otherMovies]);
+      setLoading(false);
+      setError(false);
+    } catch (err) {
+      setLoading(false);
+      setError(true);
+    }
   };
 
   useEffect(() => {
     handleLoadMovies();
   }, []);
 
-  return (
-    <Container>
-      {loading ? (
-        <LoaderContainer />
-      ) : (
-        <>
-          <MovieList title="Trending Movies" movies={trendingMovies} />
-          <MovieList title="Other Movies" movies={otherMovies} />
-        </>
-      )}
-    </Container>
-  );
+  const handleView = () => {
+    if (loading) {
+      return <LoaderContainer />;
+    } else if (error) {
+      return <Error />;
+    }
+
+    return (
+      <>
+        <MovieList title="Trending Movies" movies={trendingMovies} />
+        <MovieList title="Other Movies" movies={otherMovies} />
+      </>
+    );
+  };
+
+  return <Container>{handleView()}</Container>;
 };
 
 const Container = styled.main`
