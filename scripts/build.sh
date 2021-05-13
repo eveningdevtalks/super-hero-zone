@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 echo "Building react app"
 cd webapp
 yarn
@@ -12,7 +14,7 @@ echo "Copy build files"
 rm -rf www
 cp -r webapp/build www
 
-echo "Building Api dependencies"
+echo "Installing API dependencies"
 cd server
 yarn
 
