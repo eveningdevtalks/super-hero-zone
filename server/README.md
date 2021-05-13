@@ -7,7 +7,8 @@ This API is developed using NodeJS and MongoDB
 ### Local :computer:
 
 - Install NodeJS 12+ and MongoDB locally
-- Run `npm install`
+- Install yarn
+- Run `yarn`
 - Copy `.env.example` to `.env` and adjust parameters
 - Start development server by running `npm run dev`
 
@@ -30,5 +31,5 @@ This API is developed using NodeJS and MongoDB
 ## Running in production :rocket:
 
 - Install Node 12+ and MongoDB
-- Run `npm install`
-- Run `npm run start`
+- Run `yarn`
+- Run `yarn start`

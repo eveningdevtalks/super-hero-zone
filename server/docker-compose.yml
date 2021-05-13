@@ -12,7 +12,7 @@ services:
       - node_modules:/usr/src/app/node_modules
     depends_on:
       - mongo
-    command: npm run dev:docker
+    command: yarn dev:docker
 
   mongo:
     image: mongo

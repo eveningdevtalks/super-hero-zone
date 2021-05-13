@@ -12,8 +12,8 @@ echo "Copy build files"
 rm -rf www
 cp -r webapp/build www
 
-echo "Building Api deps"
+echo "Building Api dependencies"
 cd server
-npm i
+yarn
 
 echo "Done"
