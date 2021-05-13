@@ -2,14 +2,15 @@ import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MovieRating from "../components/MovieRating";
-import MarvelLogo from '../assets/Marvel_Logo.svg';
-import DCLogo from '../assets/DC_Comics_logo.svg';
+import Error from "../components/Error";
+import MarvelLogo from "../assets/Marvel_Logo.svg";
+import DCLogo from "../assets/DC_Comics_logo.svg";
 import LoaderContainer from "../components/Loader";
-import moment from 'moment';
 
 const MovieDetail = () => {
   const history = useHistory();
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
   const [movie, setMovie] = useState({});
 
   let { id } = useParams();
@@ -19,55 +20,77 @@ const MovieDetail = () => {
   };
 
   const handleLoadMovie = async (id) => {
-    const _data = await fetch(
-      `${process.env.REACT_APP_BASE_URL}/movies/${id}`
-    );
-    const data = await _data.json();
-    const movie = data.movie;
-    setMovie(movie);
-    setLoading(false);
-  }
+    try {
+      const _data = await fetch(
+        `${process.env.REACT_APP_BASE_URL}/movies/${id}`
+      );
+      const data = await _data.json();
+      const movie = data.movie;
+
+      if (!movie) {
+        throw new Error();
+      }
+
+      setMovie(movie);
+      setLoading(false);
+      setError(false);
+    } catch (err) {
+      setMovie({});
+      setLoading(false);
+      setError(true);
+    }
+  };
 
   useEffect(() => {
     handleLoadMovie(id);
   }, [id]);
 
-  console.log(movie);
+  const handleContentView = () => {
+    console.log(loading, error);
+    if (loading) {
+      return <LoaderContainer />;
+    } else if (error) {
+      return <Error />;
+    }
+
+    console.log(movie.releaseDate);
+
+    return (
+      <>
+        <Navigation>
+          <Button onClick={handleViewHome}>↚ Back</Button>
+        </Navigation>
+        <MovieCard>
+          <Title>{movie.title}</Title>
+          <MovieContent>
+            <ImageArea>
+              <img src={movie.imageUrl} alt=""></img>
+              <MovieRating rating={`${movie.rating}/10`} />
+            </ImageArea>
+            <ContentArea>
+              <MovieDescription>{movie.description}</MovieDescription>
+              <ExtraDetails>
+                <ReleaseDate>
+                  Released: {new Intl.DateTimeFormat('en-US').format(new Date(movie.releaseDate))}
+                </ReleaseDate>
+                <Studio>
+                  {movie.studio === "marvel" ? (
+                    <img src={MarvelLogo} alt="marvel" />
+                  ) : (
+                    <img src={DCLogo} alt="dc comics" />
+                  )}
+                </Studio>
+              </ExtraDetails>
+            </ContentArea>
+          </MovieContent>
+        </MovieCard>
+      </>
+    );
+  };
 
   return (
-    <Container type={movie.studio}>
-      {loading ? (
-        <LoaderContainer />
-      ) : (
-        <>
-          <Navigation>
-            <Button onClick={handleViewHome}>↚ Back</Button>
-          </Navigation>
-          <MovieCard>
-            <Title>{ movie.title }</Title>
-            <MovieContent>
-              <ImageArea>
-                <img
-                  src={movie.imageUrl}
-                  alt=""
-                ></img>
-                <MovieRating rating={`${movie.rating}/10`} />
-              </ImageArea>
-              <ContentArea>
-                <MovieDescription>
-                  {movie.description}
-                </MovieDescription>
-                <ExtraDetails>
-                  <ReleaseDate>Released: { moment(movie.releaseDate).format('MMM DD, YYYY') }</ReleaseDate>
-                  <Studio>
-                    { movie.studio === 'marvel' ?  <img src={MarvelLogo} alt="marvel" /> : <img src={DCLogo} alt="dc comics" /> }
-                  </Studio>
-                </ExtraDetails>
-              </ContentArea>
-            </MovieContent>
-          </MovieCard>
-        </>
-      )}
+    <Container type={movie ? movie.studio : undefined}>
+      {handleContentView()}
     </Container>
   );
 };
@@ -80,7 +103,7 @@ const resolveBackground = (type) => {
   }
 
   return "#313131";
-}
+};
 
 const Container = styled.main`
   display: flex;
