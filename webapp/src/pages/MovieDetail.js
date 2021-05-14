@@ -5,6 +5,7 @@ import MovieRating from "../components/MovieRating";
 import ErrorPage from "../components/ErrorPage";
 import MarvelLogo from "../assets/Marvel_Logo.svg";
 import DCLogo from "../assets/DC_Comics_logo.svg";
+import PopcornIcon from "../assets/popcorn.svg";
 import LoaderContainer from "../components/Loader";
 
 const MovieDetail = () => {
@@ -24,22 +25,21 @@ const MovieDetail = () => {
       const _data = await fetch(
         `${process.env.REACT_APP_BASE_URL}/movies/${id}`
       );
-
       if (_data.status !== 200) {
         throw new Error();
       }
-
       const data = await _data.json();
-      const _movie = data.movie;
+      const movie = data.movie;
 
-      if (!_movie) {
+      if (!movie) {
         throw new Error();
       }
 
-      setMovie(_movie);
+      setMovie(movie);
       setLoading(false);
       setError(false);
     } catch (err) {
+      setMovie({});
       setLoading(false);
       setError(true);
     }
@@ -50,13 +50,18 @@ const MovieDetail = () => {
   }, [id, handleLoadMovie]);
 
   const handleContentView = () => {
+    console.log(loading, error);
     if (loading) {
       return <LoaderContainer />;
-    }
-
-    if (error || !movie._id) {
+    } else if (error) {
       return <ErrorPage />;
     }
+
+    const releaseDate = movie.releaseDate
+      ? `Released : ${new Intl.DateTimeFormat("en-US").format(
+          new Date(movie.releaseDate)
+        )}`
+      : "Not Released";
 
     return (
       <>
@@ -68,17 +73,15 @@ const MovieDetail = () => {
           <MovieContent>
             <ImageArea>
               <img src={movie.imageUrl} alt=""></img>
-              <MovieRating rating={`${movie.rating}/10`} />
             </ImageArea>
             <ContentArea>
+              <MovieRating rating={movie.rating} />
+              <Duration>
+                <img src={PopcornIcon} alt="" /> {movie.duration}
+              </Duration>
               <MovieDescription>{movie.description}</MovieDescription>
               <ExtraDetails>
-                <ReleaseDate>
-                  Released:{" "}
-                  {new Intl.DateTimeFormat("en-US").format(
-                    new Date(movie.releaseDate)
-                  )}
-                </ReleaseDate>
+                <ReleaseDate>{releaseDate}</ReleaseDate>
                 <Studio>
                   {movie.studio === "marvel" ? (
                     <img src={MarvelLogo} alt="marvel" />
@@ -100,6 +103,15 @@ const MovieDetail = () => {
     </Container>
   );
 };
+
+const Duration = styled.div`
+  display: flex;
+  align-items: center;
+  > img {
+    width: 5%;
+    margin-right: 10px;
+  }
+`;
 
 const resolveBackground = (type) => {
   if (type === "marvel") {
@@ -173,10 +185,9 @@ const MovieCard = styled.div`
   width: 65%;
   margin: 0 auto;
   background: rgb(249, 249, 249);
-  height: 50vh;
   box-shadow: 10px 10px 15px 1px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
-  padding: 10px 30px;
+  padding: 20px 30px;
 `;
 
 const Navigation = styled.div`

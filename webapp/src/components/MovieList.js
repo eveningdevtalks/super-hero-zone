@@ -21,7 +21,7 @@ const MovieList = ({ title, movies }) => {
               <MovieType marvel={_movie.studio === "marvel"}>
                 {_movie.studio === "marvel" ? "Marvel" : "DC Comics"}
               </MovieType>
-              <MovieRating rating={`${_movie.rating}/10`} />
+              <MovieRating rating={_movie.rating} />
             </MovieContent>
           </Movie>
         ))}
