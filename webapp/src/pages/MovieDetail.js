@@ -50,7 +50,6 @@ const MovieDetail = () => {
   }, [id, handleLoadMovie]);
 
   const handleContentView = () => {
-    console.log(loading, error);
     if (loading) {
       return <LoaderContainer />;
     } else if (error) {
