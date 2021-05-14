@@ -11,6 +11,7 @@ module.exports = {
       description: Joi.string().optional(),
       imageUrl: Joi.string().optional().allow(null),
       rating: Joi.number().optional(),
+      duration: Joi.string().allow(null).optional(),
       studio: Joi.string()
         .valid(...studios)
         .optional(),
@@ -27,6 +28,7 @@ module.exports = {
       description: Joi.string().optional(),
       imageUrl: Joi.string().optional().allow(null),
       rating: Joi.number().optional(),
+      duration: Joi.string().allow(null).optional(),
       studio: Joi.string()
         .valid(...studios)
         .optional(),

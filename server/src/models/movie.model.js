@@ -19,6 +19,9 @@ const movieSchema = new Schema(
     imageUrl: {
       type: String,
     },
+    duration: {
+      type: String,
+    },
     studio: {
       type: String,
       enum: ["marvel", "dc"],
