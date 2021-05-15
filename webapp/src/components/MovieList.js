@@ -11,7 +11,7 @@ const MovieList = ({ title, movies }) => {
 
   return (
     <Container>
-      <h1>{title}</h1>
+      <ListTitle>{title}</ListTitle>
       <MovieContainer>
         {movies.map((_movie) => (
           <Movie key={_movie._id} onClick={() => handleViewMovie(_movie._id)}>
@@ -35,6 +35,10 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
 `;
+
+const ListTitle = styled.h1`
+  font-family: 'Cairo', sans-serif;
+`
 
 const MovieContainer = styled.div`
   display: flex;
