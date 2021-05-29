@@ -50,7 +50,6 @@ const MovieDetail = () => {
   }, [id, handleLoadMovie]);
 
   const handleContentView = () => {
-    console.log(loading, error);
     if (loading) {
       return <LoaderContainer />;
     } else if (error) {
@@ -150,6 +149,7 @@ const ImageArea = styled.div`
     display: block;
     object-fit: fill;
     border-radius: 10px;
+    height: 60vh;
     flex: 1;
     width: -webkit-fill-available;
     box-shadow: 5px 5px 15px 1px rgba(0, 0, 0, 0.2);

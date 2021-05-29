@@ -11,7 +11,7 @@ const MovieList = ({ title, movies }) => {
 
   return (
     <Container>
-      <h1>{title}</h1>
+      <ListTitle>{title}</ListTitle>
       <MovieContainer>
         {movies.map((_movie) => (
           <Movie key={_movie._id} onClick={() => handleViewMovie(_movie._id)}>
@@ -36,9 +36,19 @@ const Container = styled.div`
   align-items: center;
 `;
 
+const ListTitle = styled.h1`
+  font-family: 'Cairo', sans-serif;
+`
+
 const MovieContainer = styled.div`
   display: flex;
   width: 100%;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+
+  @media (max-width: 1200px) {
+    justify-content: center;
+  }
 `
 
 const MovieType = styled.div`
@@ -63,23 +73,24 @@ const MovieTitle = styled.div`
   color: white;
   font-weight: 600;
   font-size: 1.2rem;
+  text-align: center;
 `;
 
 const Movie = styled.div`
   border-radius: 10px;
   position: relative;
-  height: 200px;
+  height: 400px;
   border: 3px solid #505050;
   transition: all 0.25s ease-in;
-  width: 20%;
+  width: 18%;
   margin: 10px;
 
   @media (max-width: 1200px) {
-    width: 30%;
+    width: 40%;
   }
 
   @media (max-width: 768px) {
-    width: 90%;
+    width: 60%;
   }
 
   &:hover {

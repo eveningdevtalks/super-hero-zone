@@ -7,7 +7,7 @@ const Navigation = () => {
     <Nav>
       <Link to="/">
         <NavLogo>
-          Super Hero Zone <By>Evening Dev Talks</By>
+          ⚡️ Super Hero Zone <By>Evening Dev Talks</By>
         </NavLogo>
       </Link>
       <Support>
