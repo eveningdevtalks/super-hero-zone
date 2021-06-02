@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { useHistory, useParams } from "react-router-dom";
 import styled from "styled-components";
 import MovieRating from "../components/MovieRating";
@@ -20,7 +20,7 @@ const MovieDetail = () => {
     history.push("");
   };
 
-  const handleLoadMovie = useCallback(async (id) => {
+  const handleLoadMovie = async (id) => {
     try {
       const _data = await fetch(
         `${process.env.REACT_APP_BASE_URL}/movies/${id}`
@@ -43,11 +43,11 @@ const MovieDetail = () => {
       setLoading(false);
       setError(true);
     }
-  }, []);
+  };
 
   useEffect(() => {
     handleLoadMovie(id);
-  }, [id, handleLoadMovie]);
+  }, [id]);
 
   const handleContentView = () => {
     if (loading) {
